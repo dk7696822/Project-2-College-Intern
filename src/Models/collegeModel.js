@@ -1,26 +1,39 @@
-const mongoose = require('mongoose')
-
-const collegeSchema = new mongoose.Schema({
+const mongoose = require("mongoose");
+const validator = require("validator");
+const collegeSchema = new mongoose.Schema(
+  {
     name: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: [true, "Please provide college name"],
+      unique: true,
+      validate: {
+        validator: function (val) {
+          return val.trim().length != 0;
+        },
+        message: "Please do not leave the field empty",
+      },
     },
     fullName: {
-        type: String,
-        required: true
+      type: String,
+      required: [true, "Please provide college Full Name"],
+      validate: {
+        validator: function (val) {
+          return val.trim().length != 0;
+        },
+        message: "Please do not leave the field empty",
+      },
     },
     logoLink: {
-        type: String,
-        required: true,
-        validate:{function (value){this.value.match ((http|https)://)(www.)?[a-zA-Z0-9@:%._\\+~#?&//=]{2,256}\\.[a-z]{2,6}\\b([-a-zA-Z0-9@:%._\\+~#?&//=]*)" 
-
+      type: String,
+      required: [true, "Please provide Logo Link"],
+      validate: [validator.isURL, "Please provide a valid URL"],
     },
     isDeleted: {
-        type: Boolean,
-        default: false
-    }
-}, { timestamps: true }
-)
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model("college",collegeSchema)
+module.exports = mongoose.model("college", collegeSchema);
