@@ -50,6 +50,11 @@ exports.interns = async (req, res) => {
 
 exports.getInterns = async (req, res) => {
   try {
+    if(!req.query.collegeName){
+      return res
+      .status(400)
+      .send({ status: false, message: "Please provide the college name" });
+    }
     const college = await CollegeModel.findOne({ name: req.query.collegeName });
     if (!college) {
       return res
