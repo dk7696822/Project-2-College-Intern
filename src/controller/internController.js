@@ -9,7 +9,7 @@ exports.interns = async (req, res) => {
     }
     const college = await CollegeModel.findOne({ name: req.body.collegeName });
     if (!college) {
-      res
+      return res
         .status(400)
         .send({ status: false, message: "No college exist with this name" });
     }
