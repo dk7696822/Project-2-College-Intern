@@ -8,6 +8,11 @@ exports.interns = async (req, res) => {
         .send({ status: false, message: "Please enter the college name" });
     }
     const college = await CollegeModel.findOne({ name: req.body.collegeName });
+    if (!college) {
+      res
+        .status(400)
+        .send({ status: false, message: "No college exist with this name" });
+    }
     const collegeID = college._id;
     req.body.collegeId = collegeID;
     const interns = await InternModel.create(req.body);

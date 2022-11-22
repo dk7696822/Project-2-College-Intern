@@ -6,27 +6,19 @@ const collegeSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide college name"],
       unique: true,
-      validate: {
-        validator: function (val) {
-          return val.trim().length != 0;
-        },
-        message: "Please do not leave the field empty",
-      },
+      trim: true,
+      lowercase: true,
     },
     fullName: {
       type: String,
       required: [true, "Please provide college Full Name"],
-      validate: {
-        validator: function (val) {
-          return val.trim().length != 0;
-        },
-        message: "Please do not leave the field empty",
-      },
+      trim: true,
     },
     logoLink: {
       type: String,
       required: [true, "Please provide Logo Link"],
       validate: [validator.isURL, "Please provide a valid URL"],
+      trim: true,
     },
     isDeleted: {
       type: Boolean,
@@ -35,5 +27,16 @@ const collegeSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+collegeSchema.pre("save", function (next) {
+  const words = this.fullName.split(" ");
+  const excludedWords = ["of"];
+  excludedWords.forEach((el) => delete words[el]);
+  console.log(words);
+  this.fullName = words
+    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .join(" ");
+  next();
+});
 
 module.exports = mongoose.model("college", collegeSchema);
