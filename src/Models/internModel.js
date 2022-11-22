@@ -26,7 +26,6 @@ const internSchema = new mongoose.Schema(
     },
     collegeId: {
       type: ObjectId,
-      required: [true, "Please provide college ID"],
       ref: "college",
     },
     isDeleted: {
@@ -36,4 +35,5 @@ const internSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
 module.exports = mongoose.model("intern", internSchema);

@@ -30,9 +30,6 @@ const collegeSchema = new mongoose.Schema(
 
 collegeSchema.pre("save", function (next) {
   const words = this.fullName.split(" ");
-  const excludedWords = ["of"];
-  excludedWords.forEach((el) => delete words[el]);
-  console.log(words);
   this.fullName = words
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(" ");

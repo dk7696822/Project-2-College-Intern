@@ -7,7 +7,18 @@ exports.interns = async (req, res) => {
         .status(400)
         .send({ status: false, message: "Please enter the college name" });
     }
-    const college = await CollegeModel.findOne({ name: req.body.collegeName });
+    let capitalizeCollegeName = req.body.collegeName.split(" ");
+    if (capitalizeCollegeName.length > 1) {
+      capitalizeCollegeName = capitalizeCollegeName
+        .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(" ");
+    }
+    const college = await CollegeModel.findOne({
+      $or: [
+        { name: req.body.collegeName },
+        { fullName: capitalizeCollegeName },
+      ],
+    });
     if (!college) {
       return res
         .status(400)
