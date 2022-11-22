@@ -5,7 +5,7 @@ exports.interns = async (req, res) => {
     if (!req.body.collegeName || req.body.collegeName.trim().length == 0) {
       return res
         .status(400)
-        .send({ status: false, msg: "Please enter the college name" });
+        .send({ status: false, message: "Please enter the college name" });
     }
     const college = await CollegeModel.findOne({ name: req.body.collegeName });
     const collegeID = college._id;
@@ -21,15 +21,14 @@ exports.interns = async (req, res) => {
       return res.status(400).send(err.message);
     }
     if (err.code == 11000) {
-      console.log(err);
       return res.status(400).send({
         status: false,
-        msg: `Duplicate value provided at ${Object.keys(
+        message: `Duplicate value provided at ${Object.keys(
           err.keyValue
-        )}: ${Object.values(err.keyValue)}`,
+        )}: ${Object.values(err.keyValue)} already exist`,
       });
     }
-    return res.status(500).send({ status: false, msg: err.message });
+    return res.status(500).send({ status: false, message: err.message });
   }
 };
 
@@ -39,14 +38,19 @@ exports.getInterns = async (req, res) => {
     if (!college) {
       return res
         .status(400)
-        .send({ status: false, msg: "No college found with this name" });
+        .send({ status: false, message: "No college found with this name" });
     }
     const collegeId = college._id;
     const intern = await InternModel.find({ collegeId: collegeId });
     if (intern.length == 0) {
       return res.status(200).send({
-        status: false,
-        msg: "No interns found who have applied for internship in this college",
+        status: true,
+        data: {
+          name: college.name,
+          fullName: college.fullName,
+          logoLink: college.logoLink,
+          interns: "No interns have applied to this college yet",
+        },
       });
     }
     return res.status(200).send({
@@ -58,6 +62,6 @@ exports.getInterns = async (req, res) => {
       },
     });
   } catch (err) {
-    return res.status(500).send({ status: false, msg: err.message });
+    return res.status(500).send({ status: false, message: err.message });
   }
 };

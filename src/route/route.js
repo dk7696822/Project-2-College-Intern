@@ -10,3 +10,9 @@ route.post("/functionup/colleges", collegeController.createCollege);
 
 route.post("/functionup/interns", internController.interns);
 route.get("/functionup/collegeDetails", internController.getInterns);
+
+//////Handling unhandled route//////////
+route.all("*", (req, res) => {
+  res.status(404).send(`Cannot find ${req.originalUrl}`);
+});
+////////////////////////////////////////
