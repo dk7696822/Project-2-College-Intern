@@ -1,5 +1,8 @@
 const InternModel = require("../Models/internModel");
 const CollegeModel = require("../Models/collegeModel");
+
+//************************************* Create Interns **************************** */
+
 exports.interns = async (req, res) => {
   try {
     if (!req.body.collegeName || req.body.collegeName.trim().length == 0) {
@@ -47,6 +50,8 @@ exports.interns = async (req, res) => {
     return res.status(500).send({ status: false, message: err.message });
   }
 };
+
+//********************************************* Get All Interns ****************************  */
 
 exports.getInterns = async (req, res) => {
   try {

@@ -27,7 +27,8 @@ const collegeSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
+ 
+// document middleware 
 collegeSchema.pre("save", function (next) {
   const words = this.fullName.split(" ");
   this.fullName = words

@@ -1,6 +1,6 @@
 const collegeModel = require("../Models/collegeModel.js");
 
-//********************************** Createing College ************************************************** */
+//********************************** Creating College ************************************************** */
 
 const createCollege = async function (req, res) {
   try {

@@ -2,7 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
 const route = require("./route/route");
-const ObjectId = mongoose.Types.ObjectId;
 app.use(express.json());
 mongoose
   .connect(
