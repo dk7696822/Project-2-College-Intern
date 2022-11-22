@@ -29,7 +29,8 @@ exports.interns = async (req, res) => {
     }
     const collegeID = college._id;
     req.body.collegeId = collegeID;
-    const interns = await InternModel.create(req.body);
+    let interns = await InternModel.create(req.body);
+    interns = await interns.populate("collegeId", "name fullName logoLink");
     return res.status(201).send({
       status: true,
       message: "Intern Created Successfully",
@@ -55,10 +56,10 @@ exports.interns = async (req, res) => {
 
 exports.getInterns = async (req, res) => {
   try {
-    if(!req.query.collegeName){
+    if (!req.query.collegeName) {
       return res
-      .status(400)
-      .send({ status: false, message: "Please provide the college name" });
+        .status(400)
+        .send({ status: false, message: "Please provide the college name" });
     }
     const college = await CollegeModel.findOne({ name: req.query.collegeName });
     if (!college) {
