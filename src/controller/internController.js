@@ -81,6 +81,7 @@ exports.getInterns = async (req, res) => {
       });
     }
     return res.status(200).send({
+      status: true,
       data: {
         name: college.name,
         fullName: college.fullName,
